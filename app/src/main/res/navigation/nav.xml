@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/welcomeFrag">
+
+    <fragment
+        android:id="@+id/welcomeFrag"
+        android:name="com.example.test.fragments.WelcomeFrag"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFrag_to_weatherFrag"
+            app:destination="@id/weatherFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/weatherFrag"
+        android:name="com.example.test.fragments.WeatherFrag"
+        android:label="fragment_weather"
+        tools:layout="@layout/fragment_weather" >
+        <action
+            android:id="@+id/action_weatherFrag_to_welcomeFrag"
+            app:destination="@id/welcomeFrag" />
+    </fragment>
+</navigation>

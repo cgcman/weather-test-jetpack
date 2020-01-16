@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Test</string>
+    <string name="hello">Welcome</string>
+    <string name="name">Your Name</string>
+    <string name="add_your_name">Login whit your name</string>
+    <string name="yourWeather">Weather</string>
+    <string name="weatherTitle">The weather in your area</string>
+    <string name="seeWeatherTitle">See the weather in your area</string>
+</resources>
