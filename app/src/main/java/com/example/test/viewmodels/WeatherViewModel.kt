@@ -5,9 +5,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.location.Location
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.example.test.R
 import com.example.test.api.WeatherApiService
 import com.example.test.model.WeatherDataM
 import com.example.test.utils.SharePreferencesHelper
@@ -48,7 +48,7 @@ class WeatherViewModel (application: Application): BaseViewModel(application){
                     if(report.areAllPermissionsGranted()){
                         obtenerUbicacion(activity)
                     } else{
-                        fetchFromRemote(lat, lon)
+                        fetchFromRemote(lat, lon, activity)
                     }
                 }
             }
@@ -56,7 +56,7 @@ class WeatherViewModel (application: Application): BaseViewModel(application){
                 permissions: List<PermissionRequest?>?,
                 token: PermissionToken?
             ) {
-                fetchFromRemote(lat, lon)
+                fetchFromRemote(lat, lon, activity)
             }
         }).check()
     }
@@ -67,14 +67,12 @@ class WeatherViewModel (application: Application): BaseViewModel(application){
         fusedLocationClient.lastLocation?.addOnSuccessListener(activity, object:
             OnSuccessListener<Location> {
             override fun onSuccess(location: Location?) {
-                Log.e("REPORT", ""+location)
                 if(location != null){
                     lat = location?.latitude.toString()
                     lon = location?.latitude.toString()
-                    fetchFromRemote(lat, lon)
-                    Log.e("LOCATION", location?.latitude.toString()+"-"+location?.longitude.toString())
+                    fetchFromRemote(lat, lon, activity)
                 } else{
-                    fetchFromCache()
+                    fetchFromCache(activity)
                 }
             }
         })
@@ -84,13 +82,13 @@ class WeatherViewModel (application: Application): BaseViewModel(application){
         if(prefHelper.getWeatherData().equals("")){
             getLocationPermission(activity)
         }else{
-            fetchFromCache()
+            fetchFromCache(activity)
         }
     }
 
-    private fun fetchFromRemote(lat: String, lon: String){
+    private fun fetchFromRemote(lat: String, lon: String, activity: Activity){
         disposable.add(
-            weatherService.getWeatherData(lat, lon, "3bcc048115dd86cc61f16a94bd42defd")
+            weatherService.getWeatherData(lat, lon, activity.getResources().getString(R.string.api_key))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<WeatherDataM>(){
@@ -98,7 +96,7 @@ class WeatherViewModel (application: Application): BaseViewModel(application){
                         weatherLiveData.value = weatherData
                         val json = gson.toJson(weatherData)
                         prefHelper.saveWeatherData(json)
-                        Toast.makeText(getApplication(), "Weather data Retrieve fom remote", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(getApplication(), activity.getResources().getString(R.string.weather_remote), Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onError(e: Throwable) {
@@ -109,10 +107,10 @@ class WeatherViewModel (application: Application): BaseViewModel(application){
         )
     }
 
-    private fun fetchFromCache(){
+    private fun fetchFromCache(activity: Activity){
         val obj = gson.fromJson(prefHelper.getWeatherData(), WeatherDataM::class.java)
         weatherLiveData.value = obj
-        Toast.makeText(getApplication(), "Weather data Retrieve fom local", Toast.LENGTH_SHORT).show()
+        Toast.makeText(getApplication(), activity.getResources().getString(R.string.weather_local), Toast.LENGTH_SHORT).show()
     }
 
     override fun onCleared() {

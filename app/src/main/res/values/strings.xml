@@ -6,4 +6,11 @@
     <string name="yourWeather">Weather</string>
     <string name="weatherTitle">The weather in your area</string>
     <string name="seeWeatherTitle">See the weather in your area</string>
+    <string name="weather_remote">Weather data Retrieve fom remote</string>
+    <string name="weather_local">Weather data Retrieve fom local</string>
+    <string name="api_key">3bcc048115dd86cc61f16a94bd42defd</string>
+    <string name="weather">Weather:</string>
+    <string name="temperature">Temperature:</string>
+    <string name="visibility">Visibility:</string>
+    <string name="wind">Wind Speed:</string>
 </resources>
