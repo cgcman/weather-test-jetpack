@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.test.R
+import com.example.test.viewmodels.MainViewModel
 import com.example.test.viewmodels.WeatherViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import kotlinx.android.synthetic.main.fragment_weather.*
@@ -16,9 +17,7 @@ import kotlinx.android.synthetic.main.fragment_weather.*
 class WeatherFrag : Fragment() {
 
     private lateinit var viewModel: WeatherViewModel
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var lat : String = "-34.60"
-    private var lon : String = "-58.38"
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,10 +26,17 @@ class WeatherFrag : Fragment() {
         return inflater.inflate(R.layout.fragment_weather, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        activity?.run {
+            mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        } ?: throw Throwable("invalid activity")
+        mainViewModel.updateActionBarTitle(getResources().getString(R.string.yourWeather))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(WeatherViewModel::class.java)
-        getActivity()?.title= getResources().getString(R.string.yourWeather);
     }
 
     override fun onStart() {

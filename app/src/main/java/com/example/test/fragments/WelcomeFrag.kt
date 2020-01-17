@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.test.R
+import com.example.test.viewmodels.MainViewModel
 import com.example.test.viewmodels.WelcomeViewModel
 import kotlinx.android.synthetic.main.fragment_welcome.*
 
@@ -18,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_welcome.*
 class WelcomeFrag : Fragment() {
 
     private lateinit var viewModel: WelcomeViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,9 +28,17 @@ class WelcomeFrag : Fragment() {
         return inflater.inflate(R.layout.fragment_welcome, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        activity?.run {
+            mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        } ?: throw Throwable("invalid activity")
+        mainViewModel.updateActionBarTitle(getResources().getString(R.string.hello))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getActivity()?.title= getResources().getString(R.string.hello);
+
         viewModel = ViewModelProviders.of(this).get(WelcomeViewModel::class.java)
         buttonWelcome.setOnClickListener {
             val action = WelcomeFragDirections.actionWelcomeFragToWeatherFrag()
