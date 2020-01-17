@@ -15,7 +15,7 @@ import com.example.test.viewmodels.WelcomeViewModel
 import kotlinx.android.synthetic.main.fragment_welcome.*
 
 
-class WelcomeFrag : Fragment() {
+class WelcomeFrag : BaseFrag() {
 
     private lateinit var viewModel: WelcomeViewModel
 
@@ -24,6 +24,11 @@ class WelcomeFrag : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_welcome, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        getActionBar()?.setTitle(getResources().getString(R.string.hello));
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

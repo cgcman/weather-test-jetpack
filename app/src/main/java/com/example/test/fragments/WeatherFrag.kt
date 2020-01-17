@@ -12,7 +12,7 @@ import com.example.test.R
 import com.example.test.viewmodels.WeatherViewModel
 import kotlinx.android.synthetic.main.fragment_weather.*
 
-class WeatherFrag : Fragment() {
+class WeatherFrag : BaseFrag() {
 
     private lateinit var viewModel: WeatherViewModel
 
@@ -21,6 +21,11 @@ class WeatherFrag : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_weather, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        getActionBar()?.setTitle(getResources().getString(R.string.yourWeather));
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
