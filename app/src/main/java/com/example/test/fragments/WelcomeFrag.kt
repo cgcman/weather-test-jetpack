@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
@@ -43,7 +44,7 @@ class WelcomeFrag : BaseFrag() {
 
     override fun onStart() {
         super.onStart()
-
+        viewModel.checkUserExist()
         if(viewModel.checkUserExist().equals("")){
             buttonWelcome.visibility = View.GONE
         } else{
@@ -65,7 +66,8 @@ class WelcomeFrag : BaseFrag() {
     }
 
     fun observeViewModel(){
-        viewModel.UserLiveData.observe(this, Observer { user ->
+
+        viewModel.userLiveData.observe(viewLifecycleOwner, Observer { user ->
             user?.let {
                 if(it.equals("")){
                     buttonWelcome.visibility = View.GONE

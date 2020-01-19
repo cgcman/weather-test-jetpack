@@ -62,7 +62,7 @@
             android:id="@+id/progresBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/wind">
 

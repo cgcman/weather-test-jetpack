@@ -13,4 +13,5 @@
     <string name="temperature">Temperature:</string>
     <string name="visibility">Visibility:</string>
     <string name="wind">Wind Speed:</string>
+    <string name="no_internet">UPSS!! sorry, No internet Connection</string>
 </resources>
