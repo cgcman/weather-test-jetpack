@@ -11,9 +11,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.test.R
 import com.example.test.model.WeatherDataM
 import com.example.test.utils.ConnectionDetector
+import com.example.test.utils.ProgressDrawable
 import com.example.test.viewmodels.WeatherViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.tasks.OnSuccessListener
@@ -94,6 +97,7 @@ class WeatherFrag : BaseFrag() {
                     if(location != null){
                         lat = location?.latitude.toString()
                         lon = location?.latitude.toString()
+                        Log.e("LATLON",""+lat+"-"+lon)
                         fetch("remote")
                     } else{
                         fetch("local")
@@ -119,16 +123,24 @@ class WeatherFrag : BaseFrag() {
                 temp.text = ""+getResources().getString(R.string.temperature)+" "+it.main.temp
                 visibility.text = ""+getResources().getString(R.string.visibility)+" "+it.visibility
                 wind.text = ""+getResources().getString(R.string.wind)+" "+it.wind.speed
+
+                val options = RequestOptions()
+                    .placeholder(ProgressDrawable.getProgressDrawable(context!!))
+                    .error(R.drawable.error)
+
+                Glide.with(context!!)
+                    .setDefaultRequestOptions(options)
+                    .load("https://openweathermap.org/img/w/"+it.weather.get(0).icon+".png")
+                    .into(weatherImage)
             }
         })
 
         viewModel.datafromLocalLoaded.observe(viewLifecycleOwner, Observer<Boolean> { dfl ->
             dfl?.let {
-                Log.e("ERROR", "callit")
-                if(dfl){
-                    Toast.makeText(context!!, context!!.getResources().getString(R.string.weather_local), Toast.LENGTH_SHORT).show()
-                } else{
+                if(viewModel.checkDataExist().equals("")){
                     Toast.makeText(context!!, context!!.getResources().getString(R.string.weather_remote), Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(context!!, context!!.getResources().getString(R.string.weather_local), Toast.LENGTH_SHORT).show()
                 }
             }
         })

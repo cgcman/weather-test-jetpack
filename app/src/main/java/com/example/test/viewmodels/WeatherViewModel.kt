@@ -30,8 +30,16 @@ class WeatherViewModel (application: Application): BaseViewModel(application){
             return true
         }else{
             noConnection.value = true
-            loading.value = false
             return false
+        }
+    }
+
+    fun checkDataExist(): String? {
+        val dataExist = prefHelper.getWeatherData()
+        if(dataExist.equals("") || dataExist == null){
+            return ""
+        }else{
+            return dataExist
         }
     }
 
@@ -51,11 +59,11 @@ class WeatherViewModel (application: Application): BaseViewModel(application){
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<WeatherDataM>(){
                     override fun onSuccess(weatherData : WeatherDataM) {
+                        datafromLocalLoaded.value = true
+                        loading.value = false
                         weatherLiveData.value = weatherData
                         val json = gson.toJson(weatherData)
                         prefHelper.saveWeatherData(json)
-                        loading.value = false
-                        datafromLocalLoaded.value = false
                     }
 
                     override fun onError(e: Throwable) {
@@ -70,7 +78,6 @@ class WeatherViewModel (application: Application): BaseViewModel(application){
         val obj = gson.fromJson(prefHelper.getWeatherData(), WeatherDataM::class.java)
         weatherLiveData.value = obj
         datafromLocalLoaded.value = true
-        loading.value = false
     }
 
     override fun onCleared() {
