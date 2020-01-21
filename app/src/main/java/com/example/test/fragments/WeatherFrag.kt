@@ -100,7 +100,7 @@ class WeatherFrag : BaseFrag() {
                         Log.e("LATLON",""+lat+"-"+lon)
                         fetch("remote")
                     } else{
-                        fetch("local")
+                        fetch("remote")
                     }
                 }
             })
@@ -123,6 +123,8 @@ class WeatherFrag : BaseFrag() {
                 temp.text = ""+getResources().getString(R.string.temperature)+" "+it.main.temp
                 visibility.text = ""+getResources().getString(R.string.visibility)+" "+it.visibility
                 wind.text = ""+getResources().getString(R.string.wind)+" "+it.wind.speed
+
+                Log.e("LLEGA", "siii"+it.weather.get(0).description)
 
                 val options = RequestOptions()
                     .placeholder(ProgressDrawable.getProgressDrawable(context!!))
