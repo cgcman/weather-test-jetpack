@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="weatherData"
+            type="com.example.test.model.WeatherDataM" />
+    </data>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,7 +40,7 @@
             android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="@{weatherData.name}"
             style="@style/Title"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/weatherImage"/>
@@ -53,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/temp"
-            android:text=""
+            android:text="@{Integer.toString(weatherData.visibility)}"
             style="@style/Text"
             android:layout_centerHorizontal="true"
             android:layout_margin="4dp"/>
@@ -63,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/visibility"
-            android:text=""
+            android:text="@{Double.toString(weatherData.wind.speed)}"
             style="@style/Text"
             android:layout_centerHorizontal="true"
             android:layout_margin="4dp"/>
