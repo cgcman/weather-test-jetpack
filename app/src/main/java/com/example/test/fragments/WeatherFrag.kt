@@ -124,21 +124,16 @@ class WeatherFrag : BaseFrag() {
         viewModel.weatherLiveData.observe(viewLifecycleOwner, Observer<WeatherDataM> { wea ->
             wea?.let {
 
-                /*weather.text = ""+getResources().getString(R.string.weather)+" "+it.weather.get(0).description
-                temp.text = ""+getResources().getString(R.string.temperature)+" "+it.main.temp
-                visibility.text = ""+getResources().getString(R.string.visibility)+" "+it.visibility
-                wind.text = ""+getResources().getString(R.string.wind)+" "+it.wind.speed*/
-
                 dataBindin.weatherData = it
 
-                val options = RequestOptions()
+                /*val options = RequestOptions()
                     .placeholder(ProgressDrawable.getProgressDrawable(context!!))
                     .error(R.drawable.error)
 
                 Glide.with(context!!)
                     .setDefaultRequestOptions(options)
                     .load("https://openweathermap.org/img/w/"+it.weather.get(0).icon+".png")
-                    .into(weatherImage)
+                    .into(weatherImage)*/
             }
         })
 
