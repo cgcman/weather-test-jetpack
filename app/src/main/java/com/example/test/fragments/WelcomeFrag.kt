@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.test.R
 import com.example.test.viewmodels.WelcomeViewModel
 import kotlinx.android.synthetic.main.fragment_welcome.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class WelcomeFrag : BaseFrag() {
 
-    private lateinit var viewModel: WelcomeViewModel
+    val welcomeViewModel: WelcomeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +33,6 @@ class WelcomeFrag : BaseFrag() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(WelcomeViewModel::class.java)
         buttonWelcome.setOnClickListener {
             val action = WelcomeFragDirections.actionWelcomeFragToWeatherFrag()
             Navigation.findNavController(it).navigate(action)
@@ -42,11 +41,11 @@ class WelcomeFrag : BaseFrag() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.checkUserExist()
-        if(viewModel.checkUserExist().equals("")){
+        welcomeViewModel.checkUserExist()
+        if(welcomeViewModel.checkUserExist().equals("")){
             buttonWelcome.visibility = View.GONE
         } else{
-            nameInput.setText(viewModel.checkUserExist())
+            nameInput.setText(welcomeViewModel.checkUserExist())
             buttonWelcome.visibility = View.VISIBLE
         }
 
@@ -65,7 +64,7 @@ class WelcomeFrag : BaseFrag() {
 
     fun observeViewModel(){
 
-        viewModel.userLiveData.observe(viewLifecycleOwner, Observer { user ->
+        welcomeViewModel.userLiveData.observe(viewLifecycleOwner, Observer { user ->
             user?.let {
                 if(it.equals("")){
                     buttonWelcome.visibility = View.GONE
@@ -77,7 +76,7 @@ class WelcomeFrag : BaseFrag() {
     }
 
     fun saveInputName(user:String){
-        viewModel.saveUserName(user)
+        welcomeViewModel.saveUserName(user)
     }
 
 }
