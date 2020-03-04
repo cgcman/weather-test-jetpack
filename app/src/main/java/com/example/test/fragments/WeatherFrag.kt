@@ -25,12 +25,15 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.android.synthetic.main.fragment_weather.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class WeatherFrag : BaseFrag() {
+class WeatherFrag : BaseFrag(), KoinComponent {
 
     val weatherViewModel: WeatherViewModel by viewModel()
+    val connectionDetector by inject<ConnectionDetector>()
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var cd: ConnectionDetector
     private var lat : String = "-34.60"
     private var lon : String = "-58.38"
     private lateinit var dataBindin : FragmentWeatherBinding
@@ -48,19 +51,14 @@ class WeatherFrag : BaseFrag() {
         getActionBar()?.setTitle(getResources().getString(R.string.yourWeather));
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     override fun onStart() {
         super.onStart()
         init()
-        initObs()
+        checkConnection()
     }
 
     private fun init(){
-        cd = ConnectionDetector()
-        cd.isConnectingToInternet(this.context!!)
+        connectionDetector.isConnectingToInternet(this.context!!)
     }
 
     fun getLocationPermission(){
@@ -115,6 +113,26 @@ class WeatherFrag : BaseFrag() {
         }
     }
 
+    private fun checkConnection(){
+
+        weatherViewModel.noConnection.observe(viewLifecycleOwner, Observer<Boolean> { nc ->
+            nc?.let {
+                if(nc){
+                    Toast.makeText(context!!, context!!.getResources().getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                    weatherViewModel.fetchFromCache()
+                } else {
+                    initObs()
+                }
+            }
+        })
+
+        connectionDetector.getConnectionStatus().observe(viewLifecycleOwner, Observer<Boolean> { con ->
+            con?.let {
+                weatherViewModel.chekConnectivity(it)
+            }
+        })
+    }
+
     private fun initObs(){
 
         weatherViewModel.weatherLiveData.observe(viewLifecycleOwner, Observer<WeatherDataM> { wea ->
@@ -138,21 +156,6 @@ class WeatherFrag : BaseFrag() {
                 if(glp){
                     getLocationPermission()
                 }
-            }
-        })
-
-        weatherViewModel.noConnection.observe(viewLifecycleOwner, Observer<Boolean> { nc ->
-            nc?.let {
-                if(nc){
-                    Toast.makeText(context!!, context!!.getResources().getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
-                    weatherViewModel.fetchFromCache()
-                }
-            }
-        })
-
-        cd.connection.observe(viewLifecycleOwner, Observer<Boolean> { con ->
-            con?.let {
-                weatherViewModel.chekConnectivity(it)
             }
         })
 

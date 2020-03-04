@@ -10,11 +10,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class WeatherViewModel (application: Application): BaseViewModel(application){
-    private val weatherService = WeatherApiService()
+class WeatherViewModel (application: Application): BaseViewModel(application), KoinComponent {
+    val weatherService by inject<WeatherApiService>()
+    val prefHelper by inject<SharePreferencesHelper>()
+
     private val disposable = CompositeDisposable()
-    private val prefHelper = SharePreferencesHelper(application)
     private val gson = Gson()
 
     val weatherLiveData = MutableLiveData<WeatherDataM>()
@@ -26,6 +29,7 @@ class WeatherViewModel (application: Application): BaseViewModel(application){
 
     fun chekConnectivity(cnx: Boolean): Boolean{
         if(cnx){
+            noConnection.value = false
             refreshData()
             return true
         }else{

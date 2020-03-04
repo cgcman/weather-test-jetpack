@@ -2,21 +2,16 @@ package com.example.test
 
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.test.fragments.WelcomeFrag
-import com.example.test.utils.SharePreferencesHelper
 import com.example.test.viewmodels.WeatherViewModel
 import com.example.test.viewmodels.WelcomeViewModel
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
-import junit.framework.Assert.assertEquals
-import kotlinx.android.synthetic.main.fragment_welcome.*
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 /**
