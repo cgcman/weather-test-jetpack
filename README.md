@@ -4,7 +4,7 @@
 
 ### Simple Test application that shows weather information according to the location of the user
 
-Use:<br><br>
+#### Use:<br>
 MVVM architecture<br>
 Android Jetpack Navigation<br>
 Android Jetpack LiveData<br>
@@ -12,4 +12,5 @@ Data persistence with SharedPreferences<br>
 Retrofit 2<br>
 Corutines<br>
 Glide<br>
-User Location
+User Location<br>
+Unit Test samples
