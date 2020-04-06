@@ -1,6 +1,6 @@
 [![Visit Website](http://www.grdj.com.ar/img/logo_mini.jpg)](http://www.grdj.com.ar)
 
-# Routes and navigation Mapbox SDK test
+# Simple Weather - Location App
 
 ### Simple Test application that shows weather information according to the location of the user
 
